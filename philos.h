@@ -6,7 +6,7 @@
 /*   By: rvan-aud <rvan-aud@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/13 11:51:35 by rvan-aud          #+#    #+#             */
-/*   Updated: 2021/10/13 17:39:04 by rvan-aud         ###   ########.fr       */
+/*   Updated: 2021/10/13 17:44:29 by rvan-aud         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@
 # include <stdio.h>
 # include <unistd.h>
 
-typedef struct	s_args
+typedef struct s_args
 {
 	int	phi_count;
 	int	t_die;
