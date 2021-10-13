@@ -6,9 +6,23 @@
 /*   By: rvan-aud <rvan-aud@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/13 12:08:32 by rvan-aud          #+#    #+#             */
-/*   Updated: 2021/10/13 12:09:06 by rvan-aud         ###   ########.fr       */
+/*   Updated: 2021/10/13 17:38:59 by rvan-aud         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
+
+int	isnumber(char *str)
+{
+	int	i;
+
+	i = 0;
+	while (str[i])
+	{
+		if (str[i] < '0' || str[i] > '9')
+			return (0);
+		i++;
+	}
+	return (1);
+}
 
 static int	checkspace(char c)
 {
@@ -47,9 +61,7 @@ int	ft_atoi(const char *nptr)
 		rtrnval = (rtrnval * 10) + (nptr[i++] - '0');
 	if (sign == 1)
 		rtrnval *= -1;
-	if (sign == 0 && rtrnval < 0)
+	if ((sign == 0 && rtrnval < 0) || (sign == 1 && rtrnval > 0))
 		return (-1);
-	else if (sign == 1 && rtrnval > 0)
-		return (0);
 	return ((int)rtrnval);
 }
