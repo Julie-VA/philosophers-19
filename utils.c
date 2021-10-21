@@ -6,9 +6,11 @@
 /*   By: rvan-aud <rvan-aud@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/13 12:08:32 by rvan-aud          #+#    #+#             */
-/*   Updated: 2021/10/13 17:38:59 by rvan-aud         ###   ########.fr       */
+/*   Updated: 2021/10/21 16:34:15 by rvan-aud         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
+
+#include "philo.h"
 
 int	isnumber(char *str)
 {
@@ -64,4 +66,12 @@ int	ft_atoi(const char *nptr)
 	if ((sign == 0 && rtrnval < 0) || (sign == 1 && rtrnval > 0))
 		return (-1);
 	return ((int)rtrnval);
+}
+
+unsigned long	get_time(void)
+{
+	struct timeval	tm;
+
+	gettimeofday(&tm, NULL);
+	return (tm.tv_sec * 1000 + tm.tv_usec / 1000);
 }
