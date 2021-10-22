@@ -6,7 +6,7 @@
 /*   By: rvan-aud <rvan-aud@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/13 11:51:35 by rvan-aud          #+#    #+#             */
-/*   Updated: 2021/10/21 17:05:25 by rvan-aud         ###   ########.fr       */
+/*   Updated: 2021/10/22 15:33:18 by rvan-aud         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,12 @@
 # include <stdio.h>
 # include <unistd.h>
 # include <sys/time.h>
+
+# define FORK "has taken a fork"
+# define EAT "is eating"
+# define SLEEP "is sleeping"
+# define THINK "is thinking"
+# define DIE "died"
 
 typedef struct s_args
 {
@@ -33,6 +39,7 @@ typedef struct s_stru
 	t_args			args;
 	int				index;
 	pthread_mutex_t	*mutex;
+	pthread_mutex_t	mic;
 	int				start;
 	int				die;
 	unsigned long	time_start;
@@ -44,5 +51,8 @@ int				isnumber(char *str);
 int				set_args(int argc, char **argv, t_args *args);
 int				free_allocs(pthread_t *philos, t_stru *stru);
 unsigned long	get_time(void);
+int				ft_strlen(const char *s);
+char			*ft_itoa(int value);
+char			*mod_strjoin(char const *s1, char const *s2, int mod);
 
 #endif

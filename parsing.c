@@ -6,7 +6,7 @@
 /*   By: rvan-aud <rvan-aud@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/15 16:36:46 by rvan-aud          #+#    #+#             */
-/*   Updated: 2021/10/21 16:14:10 by rvan-aud         ###   ########.fr       */
+/*   Updated: 2021/10/22 16:12:53 by rvan-aud         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,17 +32,17 @@ int	set_args(int argc, char **argv, t_args *args)
 	if (isnumber(argv[1]))
 		args->phi_count = ft_atoi(argv[1]);
 	if (isnumber(argv[2]))
-		args->t_die = ft_atoi(argv[2]);
+		args->t_die = ft_atoi(argv[2]) * 1000;
 	if (isnumber(argv[3]))
-		args->t_eat = ft_atoi(argv[3]);
+		args->t_eat = ft_atoi(argv[3]) * 1000;
 	if (isnumber(argv[4]))
-		args->t_sleep = ft_atoi(argv[4]);
+		args->t_sleep = ft_atoi(argv[4]) * 1000;
 	if (argv[5] && isnumber(argv[5]))
 		args->eat_times = ft_atoi(argv[5]);
 	if (args->phi_count <= 0 || args->t_die < 0 || args->t_eat < 0
 		|| args->t_sleep < 0 || (args->eat_times < 0 && argv[5])
-		|| args->phi_count > 200 || args->t_die < 60 || args->t_eat < 60
-		|| args->t_sleep < 60)
+		|| args->phi_count > 200 || args->t_die < 60000 || args->t_eat < 60000
+		|| args->t_sleep < 60000)
 	{
 		printf("Error: bad argument(s)\n");
 		return (1);

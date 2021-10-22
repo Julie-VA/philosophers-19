@@ -6,11 +6,32 @@
 /*   By: rvan-aud <rvan-aud@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/13 11:51:20 by rvan-aud          #+#    #+#             */
-/*   Updated: 2021/10/21 17:06:54 by rvan-aud         ###   ########.fr       */
+/*   Updated: 2021/10/22 16:13:07 by rvan-aud         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
+
+static void	write_action(unsigned long time, int index, char *action, t_stru *stru)
+{
+	char	*str;
+	char	*tmp;
+	char	*bis;
+
+	pthread_mutex_lock(&stru->mic);
+	tmp = ft_itoa(time);
+	str = mod_strjoin(tmp, "", 0);
+	free(tmp);
+	tmp = ft_itoa(index);
+	bis = mod_strjoin(str, tmp, 0);
+	free(tmp);
+	free(str);
+	str = mod_strjoin(bis, action, 1);
+	free(bis);
+	write(1, str, ft_strlen(str));
+	free(str);
+	pthread_mutex_unlock(&stru->mic);
+}
 
 static void	*test(void *tmp)
 {
@@ -29,23 +50,23 @@ static void	*test(void *tmp)
 		if (stru->args.t_die < stru->args.t_eat && !stru->die)
 		{
 			start_eat = get_time();
-			printf("%ld %d manj\n", get_time() - stru->time_start, index);
-			usleep((stru->args.t_die) * 1000);
-			printf("%ld %d ded\n", get_time() - stru->time_start, index);
+			write_action(get_time() - stru->time_start, index, EAT, stru);
+			usleep((stru->args.t_die));
+			write_action(get_time() - stru->time_start, index, DIE, stru);
 			stru->die = 1;
 			break ;
 		}
 		else
 		{
 			start_eat = get_time();
-			printf("%ld %d manj\n", get_time() - stru->time_start, index);
-			usleep(stru->args.t_eat * 1000);
+			write_action(get_time() - stru->time_start, index, EAT, stru);
+			usleep(stru->args.t_eat);
 		}
-		printf("%ld %d dor\n", get_time() - stru->time_start, index);
-		usleep(stru->args.t_sleep * 1000);
+		write_action(get_time() - stru->time_start, index, SLEEP, stru);
+		usleep(stru->args.t_sleep);
 		if (get_time() - start_eat > (unsigned long)stru->args.t_die)
 		{
-			printf("%ld %d ded\n", get_time() - stru->time_start, index);
+			write_action(get_time() - stru->time_start, index, DIE, stru);
 			break ;
 		}
 	}
@@ -64,6 +85,7 @@ static int	init_threads(t_stru *stru)
 	if (!stru->mutex)
 		return (free_allocs(philos, stru));
 	stru->start = 0;
+	pthread_mutex_init(&stru->mic, NULL);
 	i = 0;
 	while (i < stru->args.phi_count)
 	{
