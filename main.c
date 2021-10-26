@@ -6,7 +6,7 @@
 /*   By: rvan-aud <rvan-aud@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/13 11:51:20 by rvan-aud          #+#    #+#             */
-/*   Updated: 2021/10/26 17:35:47 by rvan-aud         ###   ########.fr       */
+/*   Updated: 2021/10/26 17:39:23 by rvan-aud         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,20 +62,16 @@ static void	*philo_loop(void *tmp)
 	}
 	while (1)
 	{
-		if (stru->dead)
-			break ;
 		if (take_forks(stru, index))
 			break ;
 		if (p_eat(stru, index, &start_eat))
 			break ;
-		if (stru->dead)
-			break ;
-		p_sleep(stru, index);
-		if (stru->dead)
+		if (p_sleep(stru, index))
 			break ;
 		if (p_die(stru, index, start_eat))
 			break ;
-		p_think(stru, index);
+		if (p_think(stru, index))
+			break ;
 	}
 	pthread_mutex_unlock(&stru->mic);
 	return (NULL);

@@ -6,7 +6,7 @@
 /*   By: rvan-aud <rvan-aud@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/26 10:44:36 by rvan-aud          #+#    #+#             */
-/*   Updated: 2021/10/26 17:35:36 by rvan-aud         ###   ########.fr       */
+/*   Updated: 2021/10/26 17:38:45 by rvan-aud         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,10 +40,13 @@ int	p_eat(t_stru *stru, int index, unsigned long *start_eat)
 	return (0);
 }
 
-void	p_sleep(t_stru *stru, int index)
+int	p_sleep(t_stru *stru, int index)
 {
+	if (stru->dead)
+		return (1);
 	write_action(index, SLEEP, stru, 0);
 	wait_loop(stru->args.t_sleep, stru);
+	return (0);
 }
 
 int	p_die(t_stru *stru, int index, unsigned long start_eat)
@@ -59,9 +62,12 @@ int	p_die(t_stru *stru, int index, unsigned long start_eat)
 	return (0);
 }
 
-void	p_think(t_stru *stru, int index)
+int	p_think(t_stru *stru, int index)
 {
+	if (stru->dead)
+		return (1);
 	write_action(index, THINK, stru, 0);
+	return (0);
 }
 
 int	take_forks(t_stru *stru, int index)
