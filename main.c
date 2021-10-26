@@ -6,7 +6,7 @@
 /*   By: rvan-aud <rvan-aud@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/13 11:51:20 by rvan-aud          #+#    #+#             */
-/*   Updated: 2021/10/26 15:36:31 by rvan-aud         ###   ########.fr       */
+/*   Updated: 2021/10/26 17:35:47 by rvan-aud         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ void	wait_loop(unsigned long t, t_stru *stru)
 		usleep(stru->args.phi_count * 2);
 }
 
-void	write_action(int index, char *action, t_stru *stru)
+void	write_action(int index, char *action, t_stru *stru, int dead_msg)
 {
 	char	*str;
 	char	*tmp;
@@ -39,7 +39,8 @@ void	write_action(int index, char *action, t_stru *stru)
 	free(bis);
 	write(1, str, ft_strlen(str));
 	free(str);
-	pthread_mutex_unlock(&stru->mic);
+	if (!dead_msg)
+		pthread_mutex_unlock(&stru->mic);
 }
 
 static void	*philo_loop(void *tmp)
@@ -61,14 +62,22 @@ static void	*philo_loop(void *tmp)
 	}
 	while (1)
 	{
-		take_forks(stru, index);
+		if (stru->dead)
+			break ;
+		if (take_forks(stru, index))
+			break ;
 		if (p_eat(stru, index, &start_eat))
 			break ;
+		if (stru->dead)
+			break ;
 		p_sleep(stru, index);
+		if (stru->dead)
+			break ;
 		if (p_die(stru, index, start_eat))
 			break ;
 		p_think(stru, index);
 	}
+	pthread_mutex_unlock(&stru->mic);
 	return (NULL);
 }
 
