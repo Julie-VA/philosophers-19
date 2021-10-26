@@ -6,13 +6,13 @@
 /*   By: rvan-aud <rvan-aud@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/13 11:51:20 by rvan-aud          #+#    #+#             */
-/*   Updated: 2021/10/22 16:13:07 by rvan-aud         ###   ########.fr       */
+/*   Updated: 2021/10/26 11:08:21 by rvan-aud         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
 
-static void	write_action(unsigned long time, int index, char *action, t_stru *stru)
+void	write_action(unsigned long time, int index, char *action, t_stru *stru)
 {
 	char	*str;
 	char	*tmp;
@@ -42,33 +42,16 @@ static void	*test(void *tmp)
 	stru = (t_stru *)tmp;
 	index = stru->index;
 	start_eat = 0;
-	stru->die = 0;
+	stru->dead = 0;
 	while (!stru->start)
 		;
 	while (1)
 	{
-		if (stru->args.t_die < stru->args.t_eat && !stru->die)
-		{
-			start_eat = get_time();
-			write_action(get_time() - stru->time_start, index, EAT, stru);
-			usleep((stru->args.t_die));
-			write_action(get_time() - stru->time_start, index, DIE, stru);
-			stru->die = 1;
+		if (p_eat(stru, index, &start_eat))
 			break ;
-		}
-		else
-		{
-			start_eat = get_time();
-			write_action(get_time() - stru->time_start, index, EAT, stru);
-			usleep(stru->args.t_eat);
-		}
-		write_action(get_time() - stru->time_start, index, SLEEP, stru);
-		usleep(stru->args.t_sleep);
-		if (get_time() - start_eat > (unsigned long)stru->args.t_die)
-		{
-			write_action(get_time() - stru->time_start, index, DIE, stru);
+		p_sleep(stru, index);
+		if (p_die(stru, index, start_eat))
 			break ;
-		}
 	}
 	return (NULL);
 }

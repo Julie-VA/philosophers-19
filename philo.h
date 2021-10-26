@@ -6,7 +6,7 @@
 /*   By: rvan-aud <rvan-aud@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/13 11:51:35 by rvan-aud          #+#    #+#             */
-/*   Updated: 2021/10/22 15:33:18 by rvan-aud         ###   ########.fr       */
+/*   Updated: 2021/10/26 11:07:59 by rvan-aud         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,7 @@ typedef struct s_stru
 	pthread_mutex_t	*mutex;
 	pthread_mutex_t	mic;
 	int				start;
-	int				die;
+	int				dead;
 	unsigned long	time_start;
 }	t_stru;
 
@@ -54,5 +54,9 @@ unsigned long	get_time(void);
 int				ft_strlen(const char *s);
 char			*ft_itoa(int value);
 char			*mod_strjoin(char const *s1, char const *s2, int mod);
+void			write_action(unsigned long time, int index, char *action, t_stru *stru);
+int				p_eat(t_stru *stru, int index, unsigned long *start_eat);
+void			p_sleep(t_stru *stru, int index);
+int				p_die(t_stru *stru, int index, unsigned long start_eat);
 
 #endif
