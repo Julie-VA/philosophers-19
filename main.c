@@ -6,20 +6,29 @@
 /*   By: rvan-aud <rvan-aud@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/13 11:51:20 by rvan-aud          #+#    #+#             */
-/*   Updated: 2021/10/26 11:35:56 by rvan-aud         ###   ########.fr       */
+/*   Updated: 2021/10/26 15:36:31 by rvan-aud         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
 
-void	write_action(unsigned long time, int index, char *action, t_stru *stru)
+void	wait_loop(unsigned long t, t_stru *stru)
+{
+	unsigned long	start;
+
+	start = get_time();
+	while (get_time() - start < t)
+		usleep(stru->args.phi_count * 2);
+}
+
+void	write_action(int index, char *action, t_stru *stru)
 {
 	char	*str;
 	char	*tmp;
 	char	*bis;
 
 	pthread_mutex_lock(&stru->mic);
-	tmp = ft_itoa(time);
+	tmp = ft_itoa(get_time() - stru->time_start);
 	str = mod_strjoin(tmp, "", 0);
 	free(tmp);
 	tmp = ft_itoa(index);
@@ -35,8 +44,8 @@ void	write_action(unsigned long time, int index, char *action, t_stru *stru)
 
 static void	*philo_loop(void *tmp)
 {
-	t_stru	*stru;
-	int		index;
+	t_stru			*stru;
+	int				index;
 	unsigned long	start_eat;
 
 	stru = (t_stru *)tmp;
@@ -68,6 +77,11 @@ static int	init_threads(t_stru *stru)
 	int			i;
 	pthread_t	*philos;
 
+	if (stru->args.phi_count == 1)
+	{
+		printf("0 1 has taken a fork\n%d 1 is dead\n", stru->args.t_die);
+		return (0);
+	}
 	philos = malloc(sizeof(pthread_t) * stru->args.phi_count);
 	if (!philos)
 		return (1);

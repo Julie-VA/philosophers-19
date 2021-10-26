@@ -6,7 +6,7 @@
 /*   By: rvan-aud <rvan-aud@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/26 10:44:36 by rvan-aud          #+#    #+#             */
-/*   Updated: 2021/10/26 11:37:11 by rvan-aud         ###   ########.fr       */
+/*   Updated: 2021/10/26 15:30:08 by rvan-aud         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,21 +16,21 @@ int	p_eat(t_stru *stru, int index, unsigned long *start_eat)
 {
 	if (stru->args.t_die < stru->args.t_eat)
 	{
-		write_action(get_time() - stru->time_start, index, EAT, stru);
-		usleep((stru->args.t_eat));
+		write_action(index, EAT, stru);
+		wait_loop(stru->args.t_eat, stru);
 		pthread_mutex_unlock(&stru->mutex[index]);
 		pthread_mutex_unlock(&stru->mutex[index + 1]);
 		if (stru->dead)
 			return (1);
 		stru->dead = 1;
-		write_action(get_time() - stru->time_start, index, DIE, stru);
+		write_action(index, DIE, stru);
 		return (1);
 	}
 	else
 	{
 		*start_eat = get_time();
-		write_action(get_time() - stru->time_start, index, EAT, stru);
-		usleep(stru->args.t_eat);
+		write_action(index, EAT, stru);
+		wait_loop(stru->args.t_eat, stru);
 		pthread_mutex_unlock(&stru->mutex[index - 1]);
 		pthread_mutex_unlock(&stru->mutex[index]);
 	}
@@ -39,18 +39,18 @@ int	p_eat(t_stru *stru, int index, unsigned long *start_eat)
 
 void	p_sleep(t_stru *stru, int index)
 {
-	write_action(get_time() - stru->time_start, index, SLEEP, stru);
-	usleep(stru->args.t_sleep);
+	write_action(index, SLEEP, stru);
+	wait_loop(stru->args.t_sleep, stru);
 }
 
 int	p_die(t_stru *stru, int index, unsigned long start_eat)
 {
 	if (get_time() - start_eat > (unsigned long)stru->args.t_die)
-	{
+	{	
 		if (stru->dead)
 			return (1);
 		stru->dead = 1;
-		write_action(get_time() - stru->time_start, index, DIE, stru);
+		write_action(index, DIE, stru);
 		return (1);
 	}
 	return (0);
@@ -58,13 +58,13 @@ int	p_die(t_stru *stru, int index, unsigned long start_eat)
 
 void	p_think(t_stru *stru, int index)
 {
-	write_action(get_time() - stru->time_start, index, THINK, stru);
+	write_action(index, THINK, stru);
 }
 
 void	take_forks(t_stru *stru, int index)
 {
 	pthread_mutex_lock(&stru->mutex[index - 1]);
-	write_action(get_time() - stru->time_start, index, FORK, stru);
+	write_action(index, FORK, stru);
 	pthread_mutex_lock(&stru->mutex[index]);
-	write_action(get_time() - stru->time_start, index, FORK, stru);
+	write_action(index, FORK, stru);
 }
