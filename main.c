@@ -6,7 +6,7 @@
 /*   By: rvan-aud <rvan-aud@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/13 11:51:20 by rvan-aud          #+#    #+#             */
-/*   Updated: 2021/10/26 11:08:21 by rvan-aud         ###   ########.fr       */
+/*   Updated: 2021/10/26 11:35:56 by rvan-aud         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,7 @@ void	write_action(unsigned long time, int index, char *action, t_stru *stru)
 	pthread_mutex_unlock(&stru->mic);
 }
 
-static void	*test(void *tmp)
+static void	*philo_loop(void *tmp)
 {
 	t_stru	*stru;
 	int		index;
@@ -45,13 +45,20 @@ static void	*test(void *tmp)
 	stru->dead = 0;
 	while (!stru->start)
 		;
+	if (index % 2 == 0)
+	{
+		p_think(stru, index);
+		usleep(800);
+	}
 	while (1)
 	{
+		take_forks(stru, index);
 		if (p_eat(stru, index, &start_eat))
 			break ;
 		p_sleep(stru, index);
 		if (p_die(stru, index, start_eat))
 			break ;
+		p_think(stru, index);
 	}
 	return (NULL);
 }
@@ -72,9 +79,9 @@ static int	init_threads(t_stru *stru)
 	i = 0;
 	while (i < stru->args.phi_count)
 	{
-		stru->index = i;
+		stru->index = i + 1;
 		pthread_mutex_init(&stru->mutex[i], NULL);
-		if (pthread_create(&philos[i++], NULL, &test, (void *)stru) != 0)
+		if (pthread_create(&philos[i++], NULL, &philo_loop, (void *)stru) != 0)
 			return (free_allocs(philos, stru));
 		usleep(50);
 	}
