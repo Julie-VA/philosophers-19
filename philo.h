@@ -6,7 +6,7 @@
 /*   By: rvan-aud <rvan-aud@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/13 11:51:35 by rvan-aud          #+#    #+#             */
-/*   Updated: 2021/10/27 15:42:25 by rvan-aud         ###   ########.fr       */
+/*   Updated: 2021/10/27 17:21:17 by rvan-aud         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,7 +49,7 @@ typedef struct s_stru
 int				ft_atoi(const char *nptr);
 int				isnumber(char *str);
 int				set_args(int argc, char **argv, t_args *args);
-int				free_allocs(pthread_t *philos, t_stru *stru);
+int				free_allocs(pthread_t *philos, pthread_t *deaths, t_stru *stru, int mod);
 unsigned long	get_time(void);
 int				ft_strlen(const char *s);
 char			*ft_itoa(int value);
