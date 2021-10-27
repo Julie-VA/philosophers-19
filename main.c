@@ -6,7 +6,7 @@
 /*   By: rvan-aud <rvan-aud@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/13 11:51:20 by rvan-aud          #+#    #+#             */
-/*   Updated: 2021/10/26 17:39:23 by rvan-aud         ###   ########.fr       */
+/*   Updated: 2021/10/27 14:31:41 by rvan-aud         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,6 @@ static void	*philo_loop(void *tmp)
 {
 	t_stru			*stru;
 	int				index;
-	unsigned long	start_eat;
 
 	stru = (t_stru *)tmp;
 	index = stru->index;
@@ -64,17 +63,25 @@ static void	*philo_loop(void *tmp)
 	{
 		if (take_forks(stru, index))
 			break ;
-		if (p_eat(stru, index, &start_eat))
+		if (p_eat(stru, index))
 			break ;
-		if (p_sleep(stru, index))
-			break ;
-		if (p_die(stru, index, start_eat))
+		if (p_sleep(stru, index, start_eat))
 			break ;
 		if (p_think(stru, index))
+			break ;
+		if (p_die(stru, index, start_eat))
 			break ;
 	}
 	pthread_mutex_unlock(&stru->mic);
 	return (NULL);
+}
+
+static void	*death_loop(void *tmp)
+{
+	t_stru	*stru;
+
+	stru = (t_stru *)tmp;
+	index = stru->index;
 }
 
 static int	init_threads(t_stru *stru)
@@ -90,6 +97,9 @@ static int	init_threads(t_stru *stru)
 	philos = malloc(sizeof(pthread_t) * stru->args.phi_count);
 	if (!philos)
 		return (1);
+	stru->start_eat = malloc(sizeof(int) * stru->args.phi_count);
+	if (!stru->start_eat)
+		return (free_allocs(philos, stru));
 	stru->mutex = malloc(sizeof(pthread_mutex_t) * stru->args.phi_count);
 	if (!stru->mutex)
 		return (free_allocs(philos, stru));
@@ -101,6 +111,14 @@ static int	init_threads(t_stru *stru)
 		stru->index = i + 1;
 		pthread_mutex_init(&stru->mutex[i], NULL);
 		if (pthread_create(&philos[i++], NULL, &philo_loop, (void *)stru) != 0)
+			return (free_allocs(philos, stru));
+		usleep(50);
+	}
+	i = 0;
+	while (i < stru->args.phi_count)
+	{
+		stru->index = i + 1;
+		if (pthread_create(&philos[i++], NULL, &death_loop, (void *)stru) != 0)
 			return (free_allocs(philos, stru));
 		usleep(50);
 	}

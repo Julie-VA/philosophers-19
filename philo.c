@@ -6,18 +6,23 @@
 /*   By: rvan-aud <rvan-aud@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/26 10:44:36 by rvan-aud          #+#    #+#             */
-/*   Updated: 2021/10/26 17:38:45 by rvan-aud         ###   ########.fr       */
+/*   Updated: 2021/10/27 14:32:09 by rvan-aud         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
 
-int	p_eat(t_stru *stru, int index, unsigned long *start_eat)
+int	p_eat(t_stru *stru, int index)
 {
 	if (stru->args.t_die < stru->args.t_eat)
 	{
+		if (stru->dead)
+		{
+			drop_forks(stru, index);
+			return (1);
+		}
 		write_action(index, EAT, stru, 0);
-		wait_loop(stru->args.t_eat, stru);
+		wait_loop(stru->args.t_die, stru);
 		drop_forks(stru, index);
 		if (stru->dead)
 			return (1);
@@ -27,7 +32,7 @@ int	p_eat(t_stru *stru, int index, unsigned long *start_eat)
 	}
 	else
 	{
-		*start_eat = get_time();
+		stru->start_eat[index] = get_time();
 		if (stru->dead)
 		{
 			drop_forks(stru, index);
@@ -40,12 +45,27 @@ int	p_eat(t_stru *stru, int index, unsigned long *start_eat)
 	return (0);
 }
 
-int	p_sleep(t_stru *stru, int index)
+int	p_sleep(t_stru *stru, int index, unsigned long start_eat)
 {
-	if (stru->dead)
+	if ((unsigned long)stru->args.t_die < stru->args.t_sleep + (get_time() - start_eat))
+	{
+		if (stru->dead)
+			return (1);
+		write_action(index, SLEEP, stru, 0);
+		wait_loop(stru->args.t_die - stru->args.t_eat, stru);
+		if (stru->dead)
+			return (1);
+		stru->dead = 1;
+		write_action(index, DIE, stru, 1);
 		return (1);
-	write_action(index, SLEEP, stru, 0);
-	wait_loop(stru->args.t_sleep, stru);
+	}
+	else
+	{
+		if (stru->dead)
+			return (1);
+		write_action(index, SLEEP, stru, 0);
+		wait_loop(stru->args.t_sleep, stru);
+	}
 	return (0);
 }
 
