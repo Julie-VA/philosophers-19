@@ -6,7 +6,7 @@
 /*   By: rvan-aud <rvan-aud@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/13 11:51:35 by rvan-aud          #+#    #+#             */
-/*   Updated: 2021/10/27 17:21:17 by rvan-aud         ###   ########.fr       */
+/*   Updated: 2021/10/27 17:36:06 by rvan-aud         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,9 +15,9 @@
 
 # include <stdlib.h>
 # include <pthread.h>
-# include <stdio.h>
 # include <unistd.h>
 # include <sys/time.h>
+# include <stdio.h>
 
 # define FORK "has taken a fork"
 # define EAT "is eating"
@@ -44,7 +44,6 @@ typedef struct s_stru
 	unsigned long	*start_eat;
 	unsigned long	time_start;
 }	t_stru;
-
 
 int				ft_atoi(const char *nptr);
 int				isnumber(char *str);
