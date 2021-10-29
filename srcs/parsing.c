@@ -6,7 +6,7 @@
 /*   By: rvan-aud <rvan-aud@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/15 16:36:46 by rvan-aud          #+#    #+#             */
-/*   Updated: 2021/10/26 11:47:41 by rvan-aud         ###   ########.fr       */
+/*   Updated: 2021/10/29 14:19:20 by rvan-aud         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,7 @@ int	set_args(int argc, char **argv, t_args *args)
 		args->t_sleep = ft_atoi(argv[4]);
 	if (argv[5] && isnumber(argv[5]))
 		args->eat_times = ft_atoi(argv[5]);
-	if (args->phi_count <= 0 || args->t_die < 0 || args->t_eat < 0
+	if (args->phi_count < 0 || args->t_die < 0 || args->t_eat < 0
 		|| args->t_sleep < 0 || (args->eat_times < 0 && argv[5])
 		|| args->phi_count > 200 || args->t_die < 60 || args->t_eat < 60
 		|| args->t_sleep < 60)

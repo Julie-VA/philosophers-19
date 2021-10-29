@@ -6,7 +6,7 @@
 /*   By: rvan-aud <rvan-aud@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/13 11:51:35 by rvan-aud          #+#    #+#             */
-/*   Updated: 2021/10/27 17:36:06 by rvan-aud         ###   ########.fr       */
+/*   Updated: 2021/10/29 14:27:40 by rvan-aud         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,6 +43,8 @@ typedef struct s_stru
 	int				dead;
 	unsigned long	*start_eat;
 	unsigned long	time_start;
+	pthread_mutex_t	meal;
+	int				meals_count;
 }	t_stru;
 
 int				ft_atoi(const char *nptr);
