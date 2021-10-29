@@ -6,17 +6,18 @@
 #    By: rvan-aud <rvan-aud@student.s19.be>         +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/10/13 12:16:45 by rvan-aud          #+#    #+#              #
-#    Updated: 2021/10/27 17:35:41 by rvan-aud         ###   ########.fr        #
+#    Updated: 2021/10/29 13:45:34 by rvan-aud         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
-SRCS	= 	srcs/main.c		\
-			srcs/free.c		\
-			srcs/ft_atoi.c	\
-			srcs/ft_itoa.c	\
-			srcs/parsing.c	\
-			srcs/philo.c	\
-			srcs/utils.c	\
+SRCS	= 	srcs/main.c			\
+			srcs/actions.c		\
+			srcs/free.c			\
+			srcs/ft_atoi.c		\
+			srcs/ft_itoa.c		\
+			srcs/parsing.c		\
+			srcs/philo_utils.c	\
+			srcs/utils.c		\
 
 NAME	= philo
 

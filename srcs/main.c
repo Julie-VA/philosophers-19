@@ -6,42 +6,11 @@
 /*   By: rvan-aud <rvan-aud@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/13 11:51:20 by rvan-aud          #+#    #+#             */
-/*   Updated: 2021/10/27 17:21:28 by rvan-aud         ###   ########.fr       */
+/*   Updated: 2021/10/29 14:06:57 by rvan-aud         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
-
-void	wait_loop(unsigned long t, t_stru *stru)
-{
-	unsigned long	start;
-
-	start = get_time();
-	while (get_time() - start < t)
-		usleep(stru->args.phi_count * 2);
-}
-
-void	write_action(int index, char *action, t_stru *stru, int dead_msg)
-{
-	char	*str;
-	char	*tmp;
-	char	*bis;
-
-	pthread_mutex_lock(&stru->mic);
-	tmp = ft_itoa(get_time() - stru->time_start);
-	str = mod_strjoin(tmp, "", 0);
-	free(tmp);
-	tmp = ft_itoa(index);
-	bis = mod_strjoin(str, tmp, 0);
-	free(tmp);
-	free(str);
-	str = mod_strjoin(bis, action, 1);
-	free(bis);
-	write(1, str, ft_strlen(str));
-	free(str);
-	if (!dead_msg)
-		pthread_mutex_unlock(&stru->mic);
-}
 
 static void	*philo_loop(void *tmp)
 {
@@ -55,7 +24,7 @@ static void	*philo_loop(void *tmp)
 	if (index % 2 == 0)
 	{
 		p_think(stru, index);
-		usleep(800);
+		usleep(stru->args.t_eat / 2);
 	}
 	while (1)
 	{

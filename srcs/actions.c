@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   philo.c                                            :+:      :+:    :+:   */
+/*   actions.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: rvan-aud <rvan-aud@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/26 10:44:36 by rvan-aud          #+#    #+#             */
-/*   Updated: 2021/10/27 17:29:28 by rvan-aud         ###   ########.fr       */
+/*   Updated: 2021/10/29 14:05:01 by rvan-aud         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,7 +52,7 @@ int	take_forks(t_stru *stru, int index)
 		return (1);
 	}
 	write_action(index, FORK, stru, 0);
-	pthread_mutex_lock(&stru->mutex[index]);
+	pthread_mutex_lock(&stru->mutex[index % stru->args.phi_count]);
 	if (stru->dead)
 	{
 		drop_forks(stru, index);
@@ -65,5 +65,5 @@ int	take_forks(t_stru *stru, int index)
 void	drop_forks(t_stru *stru, int index)
 {
 	pthread_mutex_unlock(&stru->mutex[index - 1]);
-	pthread_mutex_unlock(&stru->mutex[index]);
+	pthread_mutex_unlock(&stru->mutex[index % stru->args.phi_count]);
 }
