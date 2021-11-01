@@ -6,21 +6,21 @@
 /*   By: rvan-aud <rvan-aud@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/15 16:55:30 by rvan-aud          #+#    #+#             */
-/*   Updated: 2021/11/01 13:19:37 by rvan-aud         ###   ########.fr       */
+/*   Updated: 2021/11/01 14:37:22 by rvan-aud         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
 
-int	free_allocs(pthread_t *philos, pthread_t *deaths, t_stru *stru, int mod)
+int	free_allocs(pthread_t *phi, pthread_t *deaths, t_stru *stru, int mod)
 {
 	if (mod == 0)
-		free(philos);
+		free(phi);
 	if (mod == 1)
 		free(deaths);
 	if (mod == 2)
 	{
-		free(philos);
+		free(phi);
 		free(deaths);
 	}
 	if (stru->start_eat)
