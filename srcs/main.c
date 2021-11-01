@@ -6,7 +6,7 @@
 /*   By: rvan-aud <rvan-aud@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/13 11:51:20 by rvan-aud          #+#    #+#             */
-/*   Updated: 2021/11/01 13:07:25 by rvan-aud         ###   ########.fr       */
+/*   Updated: 2021/11/01 13:22:57 by rvan-aud         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,8 @@ static void	*philo_loop(void *tmp)
 	pthread_mutex_unlock(&stru->mutex[index - 1]);
 	while (1)
 	{
-		if (stru->args.eat_times >= 0 && stru->meals_count >= stru->args.eat_times * stru->args.phi_count)
+		if (stru->args.eat_times >= 0
+			&& stru->meals_count >= stru->args.eat_times * stru->args.phi_count)
 			break ;
 		if (p_think(stru, index))
 			break ;
@@ -61,9 +62,11 @@ static void	*death_loop(void *tmp)
 		;
 	while (1)
 	{
-		if (stru->args.eat_times >= 0 && stru->meals_count >= stru->args.eat_times * stru->args.phi_count)
+		if (stru->args.eat_times >= 0
+			&& stru->meals_count >= stru->args.eat_times * stru->args.phi_count)
 			return (NULL);
-		if (stru->dead || get_time() - stru->start_eat[index - 1] > (unsigned long)stru->args.t_die)
+		if (stru->dead
+			|| get_time() - stru->start_eat[index - 1] > (UL)stru->args.t_die)
 		{
 			if (stru->dead)
 				break ;

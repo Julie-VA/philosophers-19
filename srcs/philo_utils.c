@@ -6,13 +6,13 @@
 /*   By: rvan-aud <rvan-aud@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/29 13:43:37 by rvan-aud          #+#    #+#             */
-/*   Updated: 2021/11/01 13:06:21 by rvan-aud         ###   ########.fr       */
+/*   Updated: 2021/11/01 13:23:37 by rvan-aud         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
 
-unsigned long	get_time(void)
+UL	get_time(void)
 {
 	struct timeval	tm;
 
@@ -20,7 +20,7 @@ unsigned long	get_time(void)
 	return (tm.tv_sec * 1000 + tm.tv_usec / 1000);
 }
 
-void	wait_loop(unsigned long t, t_stru *stru)
+void	wait_loop(UL t, t_stru *stru)
 {
 	unsigned long	start;
 
@@ -39,7 +39,7 @@ void	write_action(int index, char *action, t_stru *stru, int dead_msg)
 	if (stru->dead)
 	{
 		pthread_mutex_unlock(&stru->mic);
-		return ;	
+		return ;
 	}
 	tmp = ft_itoa(get_time() - stru->time_start);
 	str = mod_strjoin(tmp, "", 0);

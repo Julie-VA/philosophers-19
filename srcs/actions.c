@@ -6,7 +6,7 @@
 /*   By: rvan-aud <rvan-aud@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/26 10:44:36 by rvan-aud          #+#    #+#             */
-/*   Updated: 2021/11/01 13:06:55 by rvan-aud         ###   ########.fr       */
+/*   Updated: 2021/11/01 13:19:25 by rvan-aud         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,8 @@ int	p_sleep(t_stru *stru, int index)
 {
 	if (stru->dead)
 		return (1);
-	if (stru->args.eat_times >= 0 && stru->meals_count >= stru->args.eat_times * stru->args.phi_count)
+	if (stru->args.eat_times >= 0
+		&& stru->meals_count >= stru->args.eat_times * stru->args.phi_count)
 		return (0);
 	write_action(index, SLEEP, stru, 0);
 	wait_loop(stru->args.t_sleep, stru);
@@ -44,7 +45,8 @@ int	p_think(t_stru *stru, int index)
 {
 	if (stru->dead)
 		return (1);
-	if (stru->args.eat_times >= 0 && stru->meals_count >= stru->args.eat_times * stru->args.phi_count)
+	if (stru->args.eat_times >= 0
+		&& stru->meals_count >= stru->args.eat_times * stru->args.phi_count)
 		return (0);
 	write_action(index, THINK, stru, 0);
 	return (0);
