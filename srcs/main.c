@@ -6,7 +6,7 @@
 /*   By: rvan-aud <rvan-aud@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/13 11:51:20 by rvan-aud          #+#    #+#             */
-/*   Updated: 2021/10/29 16:53:12 by rvan-aud         ###   ########.fr       */
+/*   Updated: 2021/11/01 13:07:25 by rvan-aud         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,6 @@ static void	*philo_loop(void *tmp)
 		if (p_sleep(stru, index))
 			break ;
 	}
-	pthread_mutex_unlock(&stru->mic);
 	return (NULL);
 }
 
@@ -69,11 +68,12 @@ static void	*death_loop(void *tmp)
 			if (stru->dead)
 				break ;
 			write_action(index, DIE, stru, 1);
+			stru->dead = 1;
 			break ;
 		}
 		usleep(100);
 	}
-	stru->dead = 1;
+	pthread_mutex_unlock(&stru->mic);
 	return (NULL);
 }
 
@@ -136,6 +136,8 @@ static int	init_threads(t_stru *stru)
 		if (pthread_join(deaths[i++], NULL) != 0)
 			return (free_allocs(philos, deaths, stru, 2));
 	}
+	pthread_mutex_destroy(&stru->mic);
+	pthread_mutex_destroy(&stru->meal);
 	free_allocs(philos, deaths, stru, 2);
 	return (0);
 }

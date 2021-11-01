@@ -6,7 +6,7 @@
 /*   By: rvan-aud <rvan-aud@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/22 14:30:18 by rvan-aud          #+#    #+#             */
-/*   Updated: 2021/10/22 14:30:25 by rvan-aud         ###   ########.fr       */
+/*   Updated: 2021/11/01 13:12:30 by rvan-aud         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,6 +53,8 @@ int	ft_atoi(const char *nptr)
 	sign = 0;
 	i = 0;
 	rtrnval = 0;
+	if (ft_strlen(nptr) > 10)
+		return (-1);
 	while (checkspace(nptr[i]))
 		i++;
 	if (nptr[i] == '+')
