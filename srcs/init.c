@@ -6,7 +6,7 @@
 /*   By: rvan-aud <rvan-aud@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/01 14:37:10 by rvan-aud          #+#    #+#             */
-/*   Updated: 2021/11/02 18:52:43 by rvan-aud         ###   ########.fr       */
+/*   Updated: 2021/11/02 19:00:13 by rvan-aud         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,10 @@
 
 static int	init_alloc(pthread_t **philos, pthread_t **deaths, t_stru *stru)
 {
+	pthread_mutex_init(&stru->mic, NULL);
+	pthread_mutex_init(&stru->meal, NULL);
+	pthread_mutex_init(&stru->i_lock, NULL);
+	pthread_mutex_init(&stru->seat_lock, NULL);
 	stru->meals_count = 0;
 	stru->dead = 0;
 	stru->ate_last = 0;
@@ -103,10 +107,6 @@ int	init_threads(t_stru *stru)
 	deaths = NULL;
 	if (init_alloc(&philos, &deaths, stru))
 		return (1);
-	pthread_mutex_init(&stru->mic, NULL);
-	pthread_mutex_init(&stru->meal, NULL);
-	pthread_mutex_init(&stru->i_lock, NULL);
-	pthread_mutex_init(&stru->seat_lock, NULL);
 	if (create_phi(stru, philos, deaths))
 		return (1);
 	stru->time_start = get_time();

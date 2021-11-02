@@ -6,17 +6,19 @@
 #    By: rvan-aud <rvan-aud@student.s19.be>         +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/10/13 12:16:45 by rvan-aud          #+#    #+#              #
-#    Updated: 2021/11/02 17:04:07 by rvan-aud         ###   ########.fr        #
+#    Updated: 2021/11/02 19:06:13 by rvan-aud         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 SRCS	= 	srcs/main.c			\
 			srcs/actions.c		\
+			srcs/death_loop.c	\
 			srcs/free.c			\
 			srcs/ft_atoi.c		\
 			srcs/ft_itoa.c		\
 			srcs/init.c			\
 			srcs/parsing.c		\
+			srcs/philo_loop.c	\
 			srcs/philo_utils.c	\
 			srcs/utils.c		\
 
@@ -26,7 +28,7 @@ CC		= gcc
 
 RM		= rm -f
 
-CFLAGS	= -I includes -Wall -Wextra -Werror ##-fsanitize=thread -g
+CFLAGS	= -I includes -Wall -Wextra -Werror
 
 OBJS	= $(SRCS:.c=.o)
 
