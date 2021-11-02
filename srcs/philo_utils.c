@@ -6,7 +6,7 @@
 /*   By: rvan-aud <rvan-aud@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/29 13:43:37 by rvan-aud          #+#    #+#             */
-/*   Updated: 2021/11/01 15:11:12 by rvan-aud         ###   ########.fr       */
+/*   Updated: 2021/11/02 18:54:23 by rvan-aud         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,7 @@ void	write_action(int index, char *action, t_stru *stru, int dead_msg)
 	char	*bis;
 
 	pthread_mutex_lock(&stru->mic);
-	if (stru->dead)
+	if (stru->dead || stru->ate_last)
 	{
 		pthread_mutex_unlock(&stru->mic);
 		return ;
@@ -54,4 +54,7 @@ void	write_action(int index, char *action, t_stru *stru, int dead_msg)
 	free(str);
 	if (!dead_msg)
 		pthread_mutex_unlock(&stru->mic);
+	if (stru->args.eat_times >= 0
+		&& stru->meals_count >= stru->args.eat_times * stru->args.phi_count)
+		stru->ate_last = 1;
 }

@@ -6,7 +6,7 @@
 /*   By: rvan-aud <rvan-aud@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/13 11:51:35 by rvan-aud          #+#    #+#             */
-/*   Updated: 2021/11/02 17:09:28 by rvan-aud         ###   ########.fr       */
+/*   Updated: 2021/11/02 17:19:34 by rvan-aud         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,6 +41,7 @@ typedef struct s_stru
 	int				index;
 	int				dead;
 	int				meals_count;
+	int				ate_last;
 	unsigned long	*start_eat;
 	unsigned long	time_start;
 	pthread_mutex_t	*mutex;

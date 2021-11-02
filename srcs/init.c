@@ -6,7 +6,7 @@
 /*   By: rvan-aud <rvan-aud@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/01 14:37:10 by rvan-aud          #+#    #+#             */
-/*   Updated: 2021/11/02 17:08:50 by rvan-aud         ###   ########.fr       */
+/*   Updated: 2021/11/02 18:52:43 by rvan-aud         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,7 @@ static int	init_alloc(pthread_t **philos, pthread_t **deaths, t_stru *stru)
 {
 	stru->meals_count = 0;
 	stru->dead = 0;
+	stru->ate_last = 0;
 	*philos = malloc(sizeof(pthread_t) * stru->args.phi_count);
 	if (!philos)
 		return (1);
