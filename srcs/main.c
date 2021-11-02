@@ -6,7 +6,7 @@
 /*   By: rvan-aud <rvan-aud@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/13 11:51:20 by rvan-aud          #+#    #+#             */
-/*   Updated: 2021/11/02 15:25:54 by rvan-aud         ###   ########.fr       */
+/*   Updated: 2021/11/02 16:50:43 by rvan-aud         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,9 +41,14 @@ void	*philo_loop(void *tmp)
 	pthread_mutex_unlock(&stru->mutex[index - 1]);
 	while (1)
 	{
+		pthread_mutex_lock(&stru->meal);
 		if (stru->args.eat_times >= 0
 			&& stru->meals_count >= stru->args.eat_times * stru->args.phi_count)
+		{
+			pthread_mutex_unlock(&stru->meal);
 			break ;
+		}
+		pthread_mutex_unlock(&stru->meal);
 		if (p_think(stru, index))
 			break ;
 		loop = wait_first(loop, index, stru);
@@ -78,22 +83,37 @@ void	*death_loop(void *tmp)
 		;
 	while (1)
 	{
+		pthread_mutex_lock(&stru->meal);
 		if (stru->args.eat_times >= 0
 			&& stru->meals_count >= stru->args.eat_times * stru->args.phi_count)
+		{
+			pthread_mutex_unlock(&stru->meal);
 			return (NULL);
+		}
+		pthread_mutex_unlock(&stru->meal);
 		pthread_mutex_lock(&stru->seat_lock);
+		pthread_mutex_lock(&stru->dead_lock);
 		if (stru->dead
 			|| get_time() - stru->start_eat[index - 1] > (UL)stru->args.t_die)
 		{
+			pthread_mutex_unlock(&stru->dead_lock);
 			pthread_mutex_unlock(&stru->seat_lock);
+			pthread_mutex_lock(&stru->dead_lock);
 			if (stru->dead)
+			{
+				pthread_mutex_unlock(&stru->dead_lock);
 				break ;
+			}
+			pthread_mutex_unlock(&stru->dead_lock);
 			write_action(index, DIE, stru, 1);
+			pthread_mutex_lock(&stru->dead_lock);
 			stru->dead = 1;
+			pthread_mutex_unlock(&stru->dead_lock);
 			break ;
 		}
+		pthread_mutex_unlock(&stru->dead_lock);
 		pthread_mutex_unlock(&stru->seat_lock);
-		usleep(100);
+		usleep(50);
 	}
 	pthread_mutex_unlock(&stru->mic);
 	return (NULL);

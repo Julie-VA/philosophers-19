@@ -6,7 +6,7 @@
 /*   By: rvan-aud <rvan-aud@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/26 10:44:36 by rvan-aud          #+#    #+#             */
-/*   Updated: 2021/11/02 15:23:40 by rvan-aud         ###   ########.fr       */
+/*   Updated: 2021/11/02 16:51:10 by rvan-aud         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,11 +17,14 @@ int	p_eat(t_stru *stru, int index)
 	pthread_mutex_lock(&stru->seat_lock);
 	stru->start_eat[index - 1] = get_time();
 	pthread_mutex_unlock(&stru->seat_lock);
+	pthread_mutex_lock(&stru->dead_lock);
 	if (stru->dead)
-	{			
+	{
+		pthread_mutex_unlock(&stru->dead_lock);
 		drop_forks(stru, index);
 		return (1);
 	}
+	pthread_mutex_unlock(&stru->dead_lock);
 	pthread_mutex_lock(&stru->meal);
 	stru->meals_count++;
 	pthread_mutex_unlock(&stru->meal);
@@ -33,11 +36,21 @@ int	p_eat(t_stru *stru, int index)
 
 int	p_sleep(t_stru *stru, int index)
 {
+	pthread_mutex_lock(&stru->dead_lock);
 	if (stru->dead)
+	{
+		pthread_mutex_unlock(&stru->dead_lock);
 		return (1);
+	}
+	pthread_mutex_unlock(&stru->dead_lock);
+	pthread_mutex_lock(&stru->meal);
 	if (stru->args.eat_times >= 0
 		&& stru->meals_count >= stru->args.eat_times * stru->args.phi_count)
+	{
+		pthread_mutex_unlock(&stru->meal);
 		return (0);
+	}
+	pthread_mutex_unlock(&stru->meal);
 	write_action(index, SLEEP, stru, 0);
 	wait_loop(stru->args.t_sleep, stru);
 	return (0);
@@ -45,11 +58,21 @@ int	p_sleep(t_stru *stru, int index)
 
 int	p_think(t_stru *stru, int index)
 {
+	pthread_mutex_lock(&stru->dead_lock);
 	if (stru->dead)
+	{
+		pthread_mutex_unlock(&stru->dead_lock);
 		return (1);
+	}
+	pthread_mutex_unlock(&stru->dead_lock);
+	pthread_mutex_lock(&stru->meal);
 	if (stru->args.eat_times >= 0
 		&& stru->meals_count >= stru->args.eat_times * stru->args.phi_count)
+	{
+		pthread_mutex_unlock(&stru->meal);	
 		return (0);
+	}
+	pthread_mutex_unlock(&stru->meal);
 	write_action(index, THINK, stru, 0);
 	return (0);
 }
@@ -57,18 +80,24 @@ int	p_think(t_stru *stru, int index)
 int	take_forks(t_stru *stru, int index)
 {
 	pthread_mutex_lock(&stru->mutex[index - 1]);
+	pthread_mutex_lock(&stru->dead_lock);
 	if (stru->dead)
 	{
+		pthread_mutex_unlock(&stru->dead_lock);
 		pthread_mutex_unlock(&stru->mutex[index - 1]);
 		return (1);
 	}
+	pthread_mutex_unlock(&stru->dead_lock);
 	write_action(index, FORK, stru, 0);
 	pthread_mutex_lock(&stru->mutex[index % stru->args.phi_count]);
+	pthread_mutex_lock(&stru->dead_lock);
 	if (stru->dead)
 	{
+		pthread_mutex_unlock(&stru->dead_lock);
 		drop_forks(stru, index);
 		return (1);
 	}
+	pthread_mutex_unlock(&stru->dead_lock);
 	write_action(index, FORK, stru, 0);
 	return (0);
 }

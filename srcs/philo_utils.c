@@ -6,7 +6,7 @@
 /*   By: rvan-aud <rvan-aud@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/29 13:43:37 by rvan-aud          #+#    #+#             */
-/*   Updated: 2021/11/01 15:11:12 by rvan-aud         ###   ########.fr       */
+/*   Updated: 2021/11/02 16:29:08 by rvan-aud         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,8 +25,17 @@ void	wait_loop(UL t, t_stru *stru)
 	UL	start;
 
 	start = get_time();
-	while (get_time() - start < t && !stru->dead)
+	while (get_time() - start < t)
+	{
+		pthread_mutex_lock(&stru->dead_lock);
+		if (stru->dead)
+		{
+			pthread_mutex_unlock(&stru->dead_lock);
+			break ;
+		}
+		pthread_mutex_unlock(&stru->dead_lock);
 		usleep(stru->args.phi_count * 2);
+	}
 }
 
 void	write_action(int index, char *action, t_stru *stru, int dead_msg)

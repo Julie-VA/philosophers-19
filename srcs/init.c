@@ -6,7 +6,7 @@
 /*   By: rvan-aud <rvan-aud@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/01 14:37:10 by rvan-aud          #+#    #+#             */
-/*   Updated: 2021/11/02 15:20:32 by rvan-aud         ###   ########.fr       */
+/*   Updated: 2021/11/02 15:56:00 by rvan-aud         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -104,6 +104,7 @@ int	init_threads(t_stru *stru)
 	pthread_mutex_init(&stru->mic, NULL);
 	pthread_mutex_init(&stru->meal, NULL);
 	pthread_mutex_init(&stru->seat_lock, NULL);
+	pthread_mutex_init(&stru->dead_lock, NULL);
 	if (create_phi(stru, philos, deaths))
 		return (1);
 	stru->time_start = get_time();
