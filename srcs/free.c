@@ -6,7 +6,7 @@
 /*   By: rvan-aud <rvan-aud@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/15 16:55:30 by rvan-aud          #+#    #+#             */
-/*   Updated: 2021/11/02 15:20:18 by rvan-aud         ###   ########.fr       */
+/*   Updated: 2021/11/02 17:09:20 by rvan-aud         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,11 +32,11 @@ int	free_allocs(pthread_t *phi, pthread_t *deaths, t_stru *stru, int mod)
 	return (1);
 }
 
-void	free_destroy(t_stru *stru, pthread_t *philos, pthread_t *deaths)
+int	free_destroy(t_stru *stru, pthread_t *philos, pthread_t *deaths)
 {
 	pthread_mutex_destroy(&stru->mic);
 	pthread_mutex_destroy(&stru->meal);
 	pthread_mutex_destroy(&stru->i_lock);
 	pthread_mutex_destroy(&stru->seat_lock);
-	free_allocs(philos, deaths, stru, 2);
+	return (free_allocs(philos, deaths, stru, 2));
 }

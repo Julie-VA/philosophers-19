@@ -6,7 +6,7 @@
 /*   By: rvan-aud <rvan-aud@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/13 11:51:35 by rvan-aud          #+#    #+#             */
-/*   Updated: 2021/11/02 15:55:45 by rvan-aud         ###   ########.fr       */
+/*   Updated: 2021/11/02 17:09:28 by rvan-aud         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,6 @@ typedef struct s_stru
 	pthread_mutex_t	meal;
 	pthread_mutex_t	i_lock;
 	pthread_mutex_t	seat_lock;
-	pthread_mutex_t	dead_lock;
 }	t_stru;
 
 /*
@@ -64,7 +63,7 @@ void	drop_forks(t_stru *stru, int index);
 ** free.c
 */
 int		free_allocs(pthread_t *phi, pthread_t *deaths, t_stru *stru, int mod);
-void	free_destroy(t_stru *stru, pthread_t *philos, pthread_t *deaths);
+int		free_destroy(t_stru *stru, pthread_t *philos, pthread_t *deaths);
 
 /*
 ** ft_atoi.c

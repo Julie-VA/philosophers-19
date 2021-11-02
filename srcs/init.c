@@ -6,7 +6,7 @@
 /*   By: rvan-aud <rvan-aud@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/01 14:37:10 by rvan-aud          #+#    #+#             */
-/*   Updated: 2021/11/02 15:56:00 by rvan-aud         ###   ########.fr       */
+/*   Updated: 2021/11/02 17:08:50 by rvan-aud         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,6 @@ static int	create_phi(t_stru *stru, pthread_t *philos, pthread_t *deaths)
 	int	i;
 
 	i = 0;
-	pthread_mutex_init(&stru->i_lock, NULL);
 	while (i < stru->args.phi_count)
 	{
 		pthread_mutex_lock(&stru->i_lock);
@@ -45,7 +44,8 @@ static int	create_phi(t_stru *stru, pthread_t *philos, pthread_t *deaths)
 		pthread_mutex_init(&stru->mutex[i], NULL);
 		pthread_mutex_lock(&stru->mutex[i]);
 		if (pthread_create(&philos[i++], NULL, &philo_loop, (void *)stru) != 0)
-			return (free_allocs(philos, deaths, stru, 2));
+			return (free_destroy(stru, philos, deaths));
+		usleep(50);
 	}
 	return (0);
 }
@@ -61,7 +61,8 @@ static int	create_deaths(t_stru *stru, pthread_t *philos, pthread_t *deaths)
 		stru->index = i + 1;
 		pthread_mutex_unlock(&stru->i_lock);
 		if (pthread_create(&deaths[i++], NULL, &death_loop, (void *)stru) != 0)
-			return (free_allocs(philos, deaths, stru, 2));
+			return (free_destroy(stru, philos, deaths));
+		usleep(50);
 	}
 	return (0);
 }
@@ -77,7 +78,7 @@ static int	join(t_stru *stru, pthread_t *philos, pthread_t *deaths, int mod)
 		{
 			pthread_mutex_destroy(&stru->mutex[i]);
 			if (pthread_join(philos[i++], NULL) != 0)
-				return (free_allocs(philos, deaths, stru, 2));
+				return (free_destroy(stru, philos, deaths));
 		}	
 	}
 	else
@@ -85,7 +86,7 @@ static int	join(t_stru *stru, pthread_t *philos, pthread_t *deaths, int mod)
 		while (i < stru->args.phi_count)
 		{
 			if (pthread_join(deaths[i++], NULL) != 0)
-				return (free_allocs(philos, deaths, stru, 2));
+				return (free_destroy(stru, philos, deaths));
 		}
 	}
 	return (0);
@@ -103,8 +104,8 @@ int	init_threads(t_stru *stru)
 		return (1);
 	pthread_mutex_init(&stru->mic, NULL);
 	pthread_mutex_init(&stru->meal, NULL);
+	pthread_mutex_init(&stru->i_lock, NULL);
 	pthread_mutex_init(&stru->seat_lock, NULL);
-	pthread_mutex_init(&stru->dead_lock, NULL);
 	if (create_phi(stru, philos, deaths))
 		return (1);
 	stru->time_start = get_time();
