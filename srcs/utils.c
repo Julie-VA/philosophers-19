@@ -6,7 +6,7 @@
 /*   By: rvan-aud <rvan-aud@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/13 12:08:32 by rvan-aud          #+#    #+#             */
-/*   Updated: 2021/10/29 13:43:35 by rvan-aud         ###   ########.fr       */
+/*   Updated: 2021/11/01 15:29:32 by rvan-aud         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ int	ft_strlen(const char *s)
 	return (i);
 }
 
-char	*ft_strdup(const char *s)
+static char	*ft_strdup(const char *s)
 {
 	char	*dest;
 	int		i;
@@ -42,7 +42,7 @@ char	*ft_strdup(const char *s)
 	return (dest);
 }
 
-void	get_lens(const char *s1, const char *s2, int *lens1, int *lens2)
+static void	get_lens(const char *s1, const char *s2, int *lens1, int *lens2)
 {
 	*lens1 = ft_strlen(s1);
 	*lens2 = ft_strlen(s2);

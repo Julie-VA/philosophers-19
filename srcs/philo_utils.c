@@ -6,7 +6,7 @@
 /*   By: rvan-aud <rvan-aud@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/29 13:43:37 by rvan-aud          #+#    #+#             */
-/*   Updated: 2021/11/01 13:23:37 by rvan-aud         ###   ########.fr       */
+/*   Updated: 2021/11/01 15:11:12 by rvan-aud         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ UL	get_time(void)
 
 void	wait_loop(UL t, t_stru *stru)
 {
-	unsigned long	start;
+	UL	start;
 
 	start = get_time();
 	while (get_time() - start < t && !stru->dead)

@@ -6,7 +6,7 @@
 /*   By: rvan-aud <rvan-aud@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/13 11:51:35 by rvan-aud          #+#    #+#             */
-/*   Updated: 2021/11/01 14:38:25 by rvan-aud         ###   ########.fr       */
+/*   Updated: 2021/11/01 15:29:20 by rvan-aud         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,26 +48,59 @@ typedef struct s_stru
 	pthread_mutex_t	meal;
 }	t_stru;
 
-int		ft_atoi(const char *nptr);
-int		isnumber(char *str);
-int		set_args(int argc, char **argv, t_args *args);
-int		free_allocs(pthread_t *phi, pthread_t *deaths, t_stru *stru, int mod);
-UL		get_time(void);
-int		ft_strlen(const char *s);
-char	*ft_itoa(int value);
-char	*mod_strjoin(char const *s1, char const *s2, int mod);
-void	write_action(int index, char *action, t_stru *stru, int dead_msg);
+/*
+** actions.c
+*/
 int		p_eat(t_stru *stru, int index);
 int		p_sleep(t_stru *stru, int index);
-int		p_die(t_stru *stru, int index);
 int		p_think(t_stru *stru, int index);
 int		take_forks(t_stru *stru, int index);
 void	drop_forks(t_stru *stru, int index);
-void	wait_loop(unsigned long t, t_stru *stru);
-int		alloc(pthread_t **philos, pthread_t **deaths, t_stru *stru);
-int		create(t_stru *stru, pthread_t *philos, pthread_t *deaths);
+
+/*
+** free.c
+*/
+int		free_allocs(pthread_t *phi, pthread_t *deaths, t_stru *stru, int mod);
+void	free_destroy(t_stru *stru, pthread_t *philos, pthread_t *deaths);
+
+/*
+** ft_atoi.c
+*/
+int		ft_atoi(const char *nptr);
+int		isnumber(char *str);
+
+/*
+** ft_itoa.c
+*/
+char	*ft_itoa(int value);
+
+/*
+** init.c
+*/
+int		init_threads(t_stru *stru);
+
+/*
+** main.c
+*/
 void	*philo_loop(void *tmp);
 void	*death_loop(void *tmp);
-int		init_threads(t_stru *stru);
+
+/*
+** parsing.c
+*/
+int		set_args(int argc, char **argv, t_args *args);
+
+/*
+** philo_utils.c
+*/
+UL		get_time(void);
+void	wait_loop(unsigned long t, t_stru *stru);
+void	write_action(int index, char *action, t_stru *stru, int dead_msg);
+
+/*
+** utils.c
+*/
+int		ft_strlen(const char *s);
+char	*mod_strjoin(char const *s1, char const *s2, int mod);
 
 #endif
