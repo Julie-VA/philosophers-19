@@ -6,7 +6,7 @@
 /*   By: rvan-aud <rvan-aud@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/13 11:51:20 by rvan-aud          #+#    #+#             */
-/*   Updated: 2021/11/02 15:15:07 by rvan-aud         ###   ########.fr       */
+/*   Updated: 2021/11/02 15:25:54 by rvan-aud         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,7 +62,9 @@ static void	init_vars(t_stru *stru, int *index)
 	pthread_mutex_lock(&stru->i_lock);
 	*index = stru->index;
 	pthread_mutex_unlock(&stru->i_lock);
+	pthread_mutex_lock(&stru->seat_lock);
 	stru->start_eat[*index - 1] = get_time();
+	pthread_mutex_unlock(&stru->seat_lock);
 }
 
 void	*death_loop(void *tmp)
@@ -79,15 +81,18 @@ void	*death_loop(void *tmp)
 		if (stru->args.eat_times >= 0
 			&& stru->meals_count >= stru->args.eat_times * stru->args.phi_count)
 			return (NULL);
+		pthread_mutex_lock(&stru->seat_lock);
 		if (stru->dead
 			|| get_time() - stru->start_eat[index - 1] > (UL)stru->args.t_die)
 		{
+			pthread_mutex_unlock(&stru->seat_lock);
 			if (stru->dead)
 				break ;
 			write_action(index, DIE, stru, 1);
 			stru->dead = 1;
 			break ;
 		}
+		pthread_mutex_unlock(&stru->seat_lock);
 		usleep(100);
 	}
 	pthread_mutex_unlock(&stru->mic);

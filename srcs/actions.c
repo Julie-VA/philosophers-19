@@ -6,7 +6,7 @@
 /*   By: rvan-aud <rvan-aud@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/26 10:44:36 by rvan-aud          #+#    #+#             */
-/*   Updated: 2021/11/01 13:19:25 by rvan-aud         ###   ########.fr       */
+/*   Updated: 2021/11/02 15:23:40 by rvan-aud         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,9 @@
 
 int	p_eat(t_stru *stru, int index)
 {
+	pthread_mutex_lock(&stru->seat_lock);
 	stru->start_eat[index - 1] = get_time();
+	pthread_mutex_unlock(&stru->seat_lock);
 	if (stru->dead)
 	{			
 		drop_forks(stru, index);
