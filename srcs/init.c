@@ -6,7 +6,7 @@
 /*   By: rvan-aud <rvan-aud@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/01 14:37:10 by rvan-aud          #+#    #+#             */
-/*   Updated: 2021/11/01 14:55:58 by rvan-aud         ###   ########.fr       */
+/*   Updated: 2021/11/02 15:15:33 by rvan-aud         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,14 +36,16 @@ static int	create_phi(t_stru *stru, pthread_t *philos, pthread_t *deaths)
 	int	i;
 
 	i = 0;
+	pthread_mutex_init(&stru->i_lock, NULL);
 	while (i < stru->args.phi_count)
 	{
+		pthread_mutex_lock(&stru->i_lock);
 		stru->index = i + 1;
+		pthread_mutex_unlock(&stru->i_lock);
 		pthread_mutex_init(&stru->mutex[i], NULL);
 		pthread_mutex_lock(&stru->mutex[i]);
 		if (pthread_create(&philos[i++], NULL, &philo_loop, (void *)stru) != 0)
 			return (free_allocs(philos, deaths, stru, 2));
-		usleep(50);
 	}
 	return (0);
 }
@@ -55,10 +57,11 @@ static int	create_deaths(t_stru *stru, pthread_t *philos, pthread_t *deaths)
 	i = 0;
 	while (i < stru->args.phi_count)
 	{
+		pthread_mutex_lock(&stru->i_lock);
 		stru->index = i + 1;
+		pthread_mutex_unlock(&stru->i_lock);
 		if (pthread_create(&deaths[i++], NULL, &death_loop, (void *)stru) != 0)
 			return (free_allocs(philos, deaths, stru, 2));
-		usleep(50);
 	}
 	return (0);
 }

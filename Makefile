@@ -6,7 +6,7 @@
 #    By: rvan-aud <rvan-aud@student.s19.be>         +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/10/13 12:16:45 by rvan-aud          #+#    #+#              #
-#    Updated: 2021/11/01 14:37:59 by rvan-aud         ###   ########.fr        #
+#    Updated: 2021/11/02 15:10:55 by rvan-aud         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -26,7 +26,7 @@ CC		= gcc
 
 RM		= rm -f
 
-CFLAGS	= -I includes -Wall -Wextra -Werror
+CFLAGS	= -I includes -Wall -Wextra -Werror -fsanitize=thread
 
 OBJS	= $(SRCS:.c=.o)
 

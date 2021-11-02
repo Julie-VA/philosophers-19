@@ -6,7 +6,7 @@
 /*   By: rvan-aud <rvan-aud@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/13 11:51:20 by rvan-aud          #+#    #+#             */
-/*   Updated: 2021/11/01 15:29:47 by rvan-aud         ###   ########.fr       */
+/*   Updated: 2021/11/02 15:15:07 by rvan-aud         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,9 @@ void	*philo_loop(void *tmp)
 	int		loop;
 
 	stru = (t_stru *)tmp;
+	pthread_mutex_lock(&stru->i_lock);
 	index = stru->index;
+	pthread_mutex_unlock(&stru->i_lock);
 	loop = 0;
 	pthread_mutex_lock(&stru->mutex[index - 1]);
 	pthread_mutex_unlock(&stru->mutex[index - 1]);
@@ -57,7 +59,9 @@ void	*philo_loop(void *tmp)
 
 static void	init_vars(t_stru *stru, int *index)
 {
+	pthread_mutex_lock(&stru->i_lock);
 	*index = stru->index;
+	pthread_mutex_unlock(&stru->i_lock);
 	stru->start_eat[*index - 1] = get_time();
 }
 
