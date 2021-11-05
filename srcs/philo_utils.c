@@ -6,7 +6,7 @@
 /*   By: rvan-aud <rvan-aud@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/29 13:43:37 by rvan-aud          #+#    #+#             */
-/*   Updated: 2021/11/02 19:03:51 by rvan-aud         ###   ########.fr       */
+/*   Updated: 2021/11/05 14:40:06 by rvan-aud         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,11 @@ void	special_cases(t_stru *stru, int dead_msg)
 		pthread_mutex_unlock(&stru->mic);
 	if (stru->args.eat_times >= 0
 		&& stru->meals_count >= stru->args.eat_times * stru->args.phi_count)
+	{
+		pthread_mutex_lock(&stru->atel_lock);
 		stru->ate_last = 1;
+		pthread_mutex_unlock(&stru->atel_lock);
+	}
 }
 
 void	write_action(int index, char *action, t_stru *stru, int dead_msg)
@@ -45,11 +49,14 @@ void	write_action(int index, char *action, t_stru *stru, int dead_msg)
 	char	*bis;
 
 	pthread_mutex_lock(&stru->mic);
+	pthread_mutex_lock(&stru->atel_lock);
 	if (stru->dead || stru->ate_last)
 	{
 		pthread_mutex_unlock(&stru->mic);
+		pthread_mutex_unlock(&stru->atel_lock);
 		return ;
 	}
+	pthread_mutex_unlock(&stru->atel_lock);
 	tmp = ft_itoa(get_time() - stru->time_start);
 	str = mod_strjoin(tmp, "", 0);
 	free(tmp);
